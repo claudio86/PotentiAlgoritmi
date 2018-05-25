@@ -6,21 +6,18 @@ class View {
     public function generateView($autoData,$userData,$calcData)
     {
         ?>
-        <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-        <html lang="it">
+    <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+    <html lang="it">
         <head>
             <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
             <title>Potenti Algoritmi</title>
             <meta title="Potenti Algoritmi" />
             <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
-
-
-
         </head>
-        <body>
-        <div class="container">
+    <body>
+        <div class="container"  style="padding-top: 32px;">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12" >
 <!--                    <h1>Potenti Algoritmi</h1>-->
                 </div>
             </div>
@@ -28,6 +25,7 @@ class View {
 
                 <div class="col-md-6 col-sm-12">
 <!--                    <h2>Inserisci dati utente</h2>-->
+
                     <form action="index.php"  method="post">
 
                         <input type="hidden" name="action" value="userData">
@@ -38,6 +36,43 @@ class View {
                                    value="<?php
                                    if($userData[0] != ''){echo $userData[0];} ?>" >
                         </div>
+                        <div class="form-group">
+                            <label>Tipo di Km percorsi mediamente</label>
+                        </div>
+                        <div class="form-group" style="width:30%;float:left;margin-right: 4%;">
+                            <label for="kmUrbano">Urbano</label>
+                            <select class="form-control" id="kmUrbano" name="kmUrbano">
+                                <option value="100">100%</option>
+                                <option value="75">75%</option>
+                                <option value="50">50%</option>
+                                <option value="25">25%</option>
+                                <option value="0">0</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="width:30%;float:left;margin-right: 4%;">
+                            <label for="kmExtraUrbano">Extraurbano</label>
+                            <select class="form-control" id="kmExtraUrbano" name="kmExtraUrbano">
+                                <option value="100">100%</option>
+                                <option value="75">75%</option>
+                                <option value="50">50%</option>
+                                <option value="25">25%</option>
+                                <option value="0">0</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="width:30%;float:left;">
+                            <label for="kmAutostrada">Autostrada</label>
+                            <select class="form-control" id="kmAutostrada" name="kmAutostrada">
+                                <option value="100">100%</option>
+                                <option value="75">75%</option>
+                                <option value="50">50%</option>
+                                <option value="25">25%</option>
+                                <option value="0">0</option>
+                            </select>
+                        </div>
+                    <div id="aaa"></div>
+<!--                        <div class="form-group">-->
+<!--                            <input class="form-control" id="tipoKm" type="text" name="tipoKm" value="--><?php //if($userData[0] != ''){echo $userData[0];} ?><!--" >-->
+<!--                        </div>-->
                         <div class="form-group" style="width: 48%;float: left;margin-right: 4%;">
                             <label for="kmMax">Km massimi da percorre</label>
                             <select class="form-control" id="kmMax" name="kmMax" >
@@ -46,9 +81,6 @@ class View {
                                 <option id="kmMax" value="200000" <?php if($userData[1] == "200000"){echo"selected";}?>>200000</option>
                                 <option id="kmMax" value="150000" <?php if($userData[1] == "150000"){echo"selected";}?>>150000</option>
                             </select>
-
-
-<!--                            <input class="form-control" id="kmMax" type="text" name="kmMax" placeholder="--><?php //echo $userData[1]; ?><!--" value ="" >-->
                         </div>
                         <div class="form-group" style="width: 48%;float: left">
                             <label for="cBenza">Prezzo del carburante</label>
@@ -147,11 +179,42 @@ class View {
             .values p {
                 margin-bottom: 0px;
             }
-            label {display: none;}
+            /*label {display: none;}*/
             th {display: none;}
         </style>
-        </body>
-        </html>
+
+    <script type="application/javascript ">
+
+//           var limit = 100;
+//           $( "#kmUrbano" )
+//               .change(function() {
+//                   var value = $( "kmUrbano option:selected" ).text();
+//                   var all =  $( "kmExtraUrbano" ).text();
+//                   $.each(all, function(key,value){
+//                       alert( key + ": " + value );
+//                       value.attr('disabled','disabled')
+//                   });
+//               })
+//               .trigger( "change" );
+$( "#kmUrbano" )
+    .change(function () {
+        all1 = $( "#kmExtraUrbano > option" );
+
+        var all2 = $( "#kmAutostrada" ).text();
+
+all1.each(function(){
+    console.log(this.text());
+})
+//
+//        $.each(all1, function(key, value){
+////            item.attr('disabled','disabled')
+            console.log(all1);
+//        });
+    })
+    .change();
+    </script>
+    </body>
+    </html>
         <?php
     }
 

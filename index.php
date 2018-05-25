@@ -126,7 +126,7 @@ class Calc
 
         if($mapper->getToken() == null){
             if(!filter_var($_GET['token'], FILTER_VALIDATE_URL)){
-                header('Location: http://localhost/potentialgoritmi/index.php');
+                header('Location: http://localhost.potentialgoritmi/index.php');
             }
             $this->startSession();
         }
