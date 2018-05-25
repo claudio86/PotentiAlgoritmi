@@ -27,11 +27,8 @@ class Mapper
 
     public function remove()
     {
-        var_dump($_SESSION['auto_data'][$_POST['remove']]);
-
         unset($_SESSION['auto_data'][$_POST['remove']]);
         unset($_POST['remove']);
-
     }
 
     public function setUserData(){
@@ -50,7 +47,6 @@ class Mapper
     public function storeUserData($result){
         $_SESSION['user_data'] = $result;
     }
-
 
     public function getUserData(){
         if(isset($_SESSION['user_data'])) {
@@ -75,7 +71,6 @@ class Mapper
             isset($_POST["acc"]))
         {
             if(!isset($_SESSION['auto_data'])){
-                var_dump('nooasd asdasd a');
                 $_SESSION['auto_data'] = array();
             }
 

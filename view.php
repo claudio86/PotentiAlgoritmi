@@ -38,8 +38,8 @@ class View {
                                    value="<?php
                                    if($userData[0] != ''){echo $userData[0];} ?>" >
                         </div>
-                        <div class="form-group">
-                            <label for="kmMax">Km massimi che questa macchina puo' percorre</label>
+                        <div class="form-group" style="width: 48%;float: left;margin-right: 4%;">
+                            <label for="kmMax">Km massimi da percorre</label>
                             <select class="form-control" id="kmMax" name="kmMax" >
                                 <option id="kmMax" value="300000" <?php if($userData[1] == "300000"){echo"selected";}?>>300000</option>
                                 <option id="kmMax" value="250000" <?php if($userData[1] == "250000"){echo"selected";}?>>250000</option>
@@ -50,7 +50,7 @@ class View {
 
 <!--                            <input class="form-control" id="kmMax" type="text" name="kmMax" placeholder="--><?php //echo $userData[1]; ?><!--" value ="" >-->
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" style="width: 48%;float: left">
                             <label for="cBenza">Prezzo del carburante</label>
                             <input class="form-control" id="cBenza" type="text" name="cBenza"
                                    value="<?php if($userData[2] != ''){echo $userData[2];} ?>" >
@@ -70,26 +70,44 @@ class View {
 
                         <input type="hidden" name="action" value="autoData">
 
-                        <div class="form-group" style="width:48%;float:left;margin-right: 4%;">
+                        <div class="form-group" style="width:30%;float:left;margin-right: 4%;">
 
                             <label for="prezzoAuto">Prezzo</label>
                             <input class="form-control" id="prezzoAuto" type="text" name="prezzoAuto" value="">
                         </div>
-                        <div class="form-group" style="width:48%;float:left;">
+                        <div class="form-group" style="width:30%;float:left;margin-right: 4%;">
                             <label for="annoAuto">Anno</label>
-                            <input class="form-control" id="annoAuto" type="text" name="annoAuto" value="">
+                            <select  class="form-control" id="annoAuto" name="annoAuto">
+
+                            <?php
+
+                                date_default_timezone_set('Europe/Rome');
+                                $nowDate = getdate()['year'];
+
+                                for($n = 1980; $n <= $nowDate; $n++){
+                                    if($n==$nowDate){$selected= "selected";}
+                                    echo "<option value=\"".$n."\" ".$selected."  >".$n."</option>";
+                                }
+
+                            ?>
+
+                            </select>
                         </div>
-                        <div class="form-group" style="width:48%;float:left;margin-right: 4%;">
+                        <div class="form-group" style="width:30%;float:left;">
                             <label for="kmAuto">Km</label>
                             <input class="form-control" id="kmAuto" type="text" name="kmAuto" value="">
                         </div>
-                        <div class="form-group" style="width:48%;float:left;">
+                        <div class="form-group" style="width:48%;float:left;margin-right: 4%;">
                             <label for="cBenza">Km/l</label>
                             <input class="form-control" id="kml" type="text" name="kml" value="">
                         </div>
                         <div class="form-group" style="width:48%;float:left;">
                             <label for="cBenza">Accessori</label>
-                            <input class="form-control" id="acc" type="text" name="acc" value="">
+                            <select  class="form-control" id="acc" name="acc">
+                                <option value="1">Scarso</option>
+                                <option value="2">Medio</option>
+                                <option value="3">Alto</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <input class="form-control" type="submit" value="INVIA">
@@ -102,7 +120,7 @@ class View {
             <div class="row content" style="margin-bottom:24px;">
 
                 <div class="col-md-12 col-sm-12">
-                    <form action="index.php"  method="post">
+                    <form action="index.php"  method="post" onsubmit="return confirm('Sicuro?');">
                         <input type="hidden" name="reset">
                         <div class="form-group">
                             <input class="form-control" type="submit" value="RESET">
@@ -114,7 +132,7 @@ class View {
                 <div class="col-md-12">
                     <?php
                     if ( $calcData != null ) {
-//                        $this->generateItemsTable($calcData);
+                        $this->generateItemsTable($calcData,$userData);
                     }
                     ?>
                 </div>
@@ -125,17 +143,30 @@ class View {
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
-
+        <style>
+            .values p {
+                margin-bottom: 0px;
+            }
+            label {display: none;}
+            th {display: none;}
+        </style>
         </body>
         </html>
         <?php
     }
 
-    public function generateItemsTable($results)
+    public function generateItemsTable($results,$userData)
     {
         ?>
-        <table class="table">
-            <th>Dati auto</th><th>Durata stimata anni</th><th>Eta a 200k km</th><th>Costo Anno</th><th>Valore accessori</th><th>Hp</th><th>Score</th>
+        <table class="table values">
+            <th>Dati auto</th>
+                <th>Durata auto<br />in anni</th>
+                <th>Eta auto a<br /><?php echo $userData[1] ?>km</th>
+                <th>Costo auto<br />per anno</th>
+                <th>Valore<br />accessori</th>
+                <th>km/l</th>
+                <th>Score</th>
+
 
             <?php
 
@@ -143,15 +174,20 @@ class View {
 
                 ?>
                 <tr>
-                    <td><?php echo "Costo: " . $item[1][0] . " - Anno: " . $item[1][1] . " - Km: " . $item[1][2] ?> </td>
+                    <td><?php echo "<p>Costo: " . $item[1][0] . "</p><p>Anno: " . $item[1][1] . "</p><p>Km: " . $item[1][2] ?></p></td>
 
                     <?php if(isset($item[0][0]) && isset($item[0][2]) && isset($item[0][1]) && isset($item[1][4]) && isset($item[1][3]) && isset($item[0][3])) { ?>
-                        <td><?php echo $item[1][0]; ?> </td>
-                        <td><?php echo $item[1][2]; ?> </td>
-                        <td><?php echo $item[1][1]; ?></td>
-                        <td><?php echo $item[1][4]; ?></td>
-                        <td><?php echo $item[0][3]; ?></td>
+                        <td><?php echo $item[0][0]; ?> </td>
+                        <td><?php echo $item[0][2]; ?> </td>
+                        <td><?php echo $item[0][1]; ?></td>
+                        <td><?php
+                            if($item[1][4]==1){echo"Scarso";}
+                            if($item[1][4]==2){echo"Medio";}
+                            if($item[1][4]==3){echo"Alto";}
+                            ?>
+                        </td>
                         <td><?php echo $item[1][3]; ?></td>
+                        <td><?php echo $item[0][3]; ?></td>
                     <?php }else{ ?>
                         <td></td><td></td><td></td><td></td><td></td><td></td>
                         <?php
@@ -160,7 +196,7 @@ class View {
 
                     <td>
                         <form action="index.php"  method="post">
-                            <input type="hidden" name="remove" value="<?php echo $key; ?>">
+                            <input type="hidden" name="remove" value="<?php echo $key; ?>" onsubmit="return confirm('Sicuro?');>
                             <div class="form-group">
                                 <input class="form-control" type="submit" value="remove">
                             </div>

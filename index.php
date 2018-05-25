@@ -17,7 +17,7 @@ class Calc
 
     public function raccogliDati()
     {
-        $mapper = new Mapper();
+        $mapper   = new Mapper();
         $autoData = null; // autoData
         $userData = null; // userData
         $calcData = null; // calcData
@@ -33,15 +33,11 @@ class Calc
         if(isset($_POST['action'])) {
 
             if ($_POST['action'] == 'autoData') {
-                if (!$mapper->setAutoData()){
-                    var_dump("SetAuto-false".false);
-                }
+                $mapper->setAutoData();
             }
 
             if ($_POST['action'] == 'userData') {
-                if ($mapper->setUserData() === false){
-                    var_dump("SetUser-false".false);
-                }
+                $mapper->setUserData();
             }
 
             $_POST = array();
@@ -50,18 +46,10 @@ class Calc
         if ($mapper->getAutoData() != false) {
             $autoData = $mapper->getAutoData();
         }
-        else{
-            var_dump("GetAuto-false".false);
-        }
+
         if ($mapper->getUserData() != false) {
             $userData = $mapper->getUserData();
         }
-        else{
-            var_dump("GetUser-false".false);
-        }
-//        var_dump($result[1]);
-
-        var_dump($autoData);
 
         if($autoData != null && $userData != null) {
             $calcData = array();
@@ -69,26 +57,23 @@ class Calc
                 $calcData[] = array($this->calcola($item), $item);
             }
         }
-
-
-        //
-//var_dump($_SESSION['auto_data']);
-//var_dump($mapper->getAutoData());
-//var_dump($result[2]);
-//
-//
-//var_dump($_SESSION['user_data']);
-//var_dump($mapper->getUserData());
-//var_dump($result[1]);
+        else {
+            if($autoData != null) {
+                $calcData = array();
+                foreach ($autoData as $item) {
+                    $calcData[] = array(null, $item);
+                }
+            }
+        }
 
         $view = new View();
         $view->generateView($autoData,$userData,$calcData);
+
     }
 
 
-    public function calcola($array)
+    public function calcola( $array )
     {
-
         $mapper = new Mapper();
         $userData = $mapper->getUserData();
         $kmAnno = intval ($userData[0]);
@@ -121,7 +106,7 @@ class Calc
         return array($anniDurataAuto, $costoAnno, $etaAutoAFineVita, $score);
     }
 
-    public function ordinaItems($items)
+    public function ordinaItems( $items )
     {
 
         $ording = array();
@@ -138,7 +123,7 @@ class Calc
 
     public function identityCheck(){
         $mapper = new Mapper();
-        // assegna token quando entri
+
         if($mapper->getToken() == null){
             if(!filter_var($_GET['token'], FILTER_VALIDATE_URL)){
                 header('Location: http://localhost/potentialgoritmi/index.php');
@@ -156,7 +141,7 @@ class Calc
         $rand = '';
         foreach (array_rand($seed, 5) as $k) $rand .= $seed[$k];
         $mapper->setToken($rand);
-        header("location: http://localhost/potentialgoritmi/index.php/token=".$rand);
+        header("location: http://localhost/pa/index.php/token=".$rand);
     }
 
     public function startDb(){
